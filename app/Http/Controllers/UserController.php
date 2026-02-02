@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -23,7 +24,18 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        dd($request->validated());
+        $data = $request->validated();
+        try {
+            $user = new User(); //criando objeto para usuario
+            $user->fill($data); //informação dimanica
+            $user->password = Hash::make('password'); // senha padrao
+            $user->save(); // armazenar no banco de dados
+
+            return response()->json($user, 201);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'message' => 'Falha ao inserir usuário!'], 400);
+        }
     }
 
     /**
