@@ -30,7 +30,13 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            return response()->json($user, 200);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'message' => 'Falha ao buscar usuário!'], 404);
+        }
     }
 
     /**
