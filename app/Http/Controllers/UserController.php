@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -55,9 +56,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        $data = $request->validated();
+        try {
+            $user = User::findOrFail($id); //Usuario já existe
+            $user->update($data); // atualizar com as novas informações
+
+
+            return response()->json($user, 200);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'message' => 'Falha ao alterar o usuário!'], 400);
+        }
     }
 
     /**
