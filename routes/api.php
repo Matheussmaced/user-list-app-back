@@ -8,5 +8,6 @@ use Illuminate\Support\Facades\Route;
  //   return $request->user();
 // })->middleware('auth:sanctum');
 
-route::get('/users', [UserController::class, 'index'] );
-
+//route::get('/users', [UserController::class, 'index'] );
+//route::post('/users', [UserController::class, 'store'] );
+Route::apiResource('/users', UserController::class); // cadastrando 5 rotas maneira automatica
