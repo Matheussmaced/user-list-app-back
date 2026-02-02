@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +8,5 @@ use Illuminate\Support\Facades\Route;
  //   return $request->user();
 // })->middleware('auth:sanctum');
 
-route::get('/users', function (Request $request){
-    return User::all();
-});
+route::get('/users', [UserController::class, 'index'] );
+
