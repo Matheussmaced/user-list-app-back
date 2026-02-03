@@ -14,9 +14,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+
+        $currentPage = $request->get('current_page') ?? 1;
+        $regPerPage = 3;
+
+        $skip = ($currentPage - 1) * $regPerPage; // 1 = 0 --- 2 = 3
+
+        $users = User::skip($skip)->take($regPerPage)->orderByDesc('id')->get(); // valor descrecente
+
         return response()->json($users, 200);
     }
 
