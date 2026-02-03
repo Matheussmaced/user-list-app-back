@@ -76,6 +76,16 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $removed = User::destroy($id); //Usuario já existe
+            if(!$removed) {
+                throw new \Exception("Usuário não encontrado");
+            }
+
+            return response()->json(null, 204);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'message' => 'Falha ao remover o usuário!'], 400);
+        }
     }
 }
